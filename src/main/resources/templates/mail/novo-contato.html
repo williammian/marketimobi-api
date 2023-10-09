@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+
+<body style="font-family: Arial; font-size: 14px;">
+
+<p>Olá!</p>
+
+<p>Novo Contato através da Plataforma</p>
+
+<p>Solicitação em <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy - HH:mm')}">01/01/2020 12:30</span></p>
+
+<p></p>
+<p>Nome: <span th:text="${contato.nome}">Teste</span></p>
+
+<p>Email: <span th:text="${contato.email}">teste@teste.com.br</span></p>
+
+<p>Telefone: <span th:text="${contato.telefone}">(11)4544-9999</span></p>
+
+<p>Assunto: <span th:text="${contato.assunto}">Assunto</span></p>
+
+<p>Mensagem: <span th:text="${contato.mensagem}">Mensagem</span></p>
+
+<p>Equipe Market Imobi!</p>
+
+</body>
+</html>

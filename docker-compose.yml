@@ -1,0 +1,51 @@
+version: '3.0'
+services:
+
+  bd:
+    container_name: marketimobi-bd
+    image: mysql:5
+    healthcheck:
+      test: mysql --protocol=socket -hlocalhost -uroot -p$$MYSQL_ROOT_PASSWORD -e 'SELECT 1'
+    environment:
+      MYSQL_ROOT_PASSWORD: "root123"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "user123"
+      MYSQL_DATABASE: "marketimobi"
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - 3306:3306
+    networks:
+      - marketimobi-network
+  
+  api:
+    container_name: marketimobi-api
+    image: williammian/marketimobi-api:latest
+    deploy:
+      resources:
+        limits:
+          memory: 800M
+    environment:
+      DATABASE_USERNAME: "root"
+      DATABASE_PASSWORD: "root123"
+      DATABASE_URL: "jdbc:mysql://marketimobi-bd:3306/marketimobi?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useTimezone=true&serverTimezone=America/Sao_Paulo"
+    ports:
+      - 8081:8081
+    depends_on:
+      bd:
+        condition: service_healthy
+    networks:
+      - marketimobi-network
+
+  ui: 
+    container_name: marketimobi-ui
+    image: williammian/marketimobi-ui:latest
+    ports:
+      - 80:80
+    depends_on:
+      - api
+    networks:
+      - marketimobi-network
+
+networks:
+  marketimobi-network: 
+    driver: bridge
